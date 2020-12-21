@@ -9,9 +9,11 @@ protected:
 
 public:
 	Piece(std::string& place, bool isWhite, char value);
-	virtual bool isLegal(Piece*& board, std::string dst) = 0;
+	virtual int isLegal(Piece*& board, std::string dst) = 0;
 	void setPosition(std::string& place);
 	void setValue(char value);
+	int getPositionX();
+	int getPositionY();
 	bool isPieceWhite();
 
 };
