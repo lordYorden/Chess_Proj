@@ -1,9 +1,5 @@
 #include "Bishop.h"
 
-int Bishop::isLegal(Piece*& board, std::string& dst)
-{
-	//TODO
-}
 Bishop::Bishop(std::string& place, bool isWhite) :
 	Piece(place,isWhite)
 {
@@ -15,4 +11,8 @@ Bishop::Bishop(std::string& place, bool isWhite) :
 	{
 		setValue(BLACK);
 	}
+}
+int Bishop::isLegal(Piece*& board, std::string& dst)
+{
+	//TODO
 }

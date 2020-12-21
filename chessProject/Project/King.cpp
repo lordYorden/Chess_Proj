@@ -1,9 +1,5 @@
 #include "King.h"
 
-int King::isLegal(Piece*& board, std::string dst)
-{
-	//TODO
-}
 King::King(std::string& place, bool isWhite) :
 	Piece(place,isWhite)
 {
@@ -15,4 +11,8 @@ King::King(std::string& place, bool isWhite) :
 	{
 		setValue(BLACK);
 	}
+}
+int King::isLegal(Piece*& board, std::string& dst)
+{
+	//todo
 }

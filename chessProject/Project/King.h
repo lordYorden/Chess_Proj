@@ -7,5 +7,4 @@ class King : public Piece
 {
 	King(std::string& place, bool isWhite);
 	virtual int isLegal(Piece*& board, std::string& dst);
-
 };
