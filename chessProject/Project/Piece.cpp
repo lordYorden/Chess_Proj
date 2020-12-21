@@ -1,7 +1,7 @@
 #include "Piece.h"
 
-Piece::Piece(std::string& place, bool isWhite, char value) :
-	_isWhite(isWhite), _value(value)
+Piece::Piece(std::string& place, bool isWhite):
+	_isWhite(isWhite)
 {
 	setPosition(place);
 }
@@ -37,8 +37,6 @@ int Piece::getPositionY()
 {
 	return this->_position[1];
 }
-
-
 
 bool Piece::isPieceWhite()
 {
