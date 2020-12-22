@@ -3,7 +3,7 @@
 #define WHITE 'P'
 
 Pawn::Pawn(std::string& place, bool isWhite):
-	Piece(place, isWhite)
+	Piece(place, isWhite), _isFirstMove(true)
 {
 	if (this->_isWhite)
 	{
