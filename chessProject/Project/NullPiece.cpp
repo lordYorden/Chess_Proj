@@ -1,8 +1,8 @@
 #include "NullPiece.h"
 #define SYMBOL '#'
 
-NullPiece::NullPiece(int x,int y, bool isWhite):
-	Piece(x,y, isWhite)
+NullPiece::NullPiece(int x, int y):
+	Piece(x,y, false)
 {
 	this->setValue(SYMBOL);
 }

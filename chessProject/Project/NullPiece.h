@@ -5,7 +5,7 @@
 class NullPiece : public Piece
 {
 public:
-	NullPiece(int x, int y, bool isWhite);
+	NullPiece(int x, int y);
 	NullPiece(Piece& other);
 	~NullPiece();
 	virtual int isLegal(Piece*& board, std::string& dst);
