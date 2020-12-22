@@ -11,7 +11,7 @@ public:
 	//empty constructor for nullpiece
 	Piece();
 	Piece(int x,int y, bool isWhite);
-	virtual int isLegal(Piece*& board, std::string dst) = 0;
+	virtual int isLegal(Piece*& board, std::string& dst) = 0;
 	void setPosition(std::string& place);
 	void setPositionX(int x);
 	void setPositionY(int y);
