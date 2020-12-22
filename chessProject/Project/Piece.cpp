@@ -27,19 +27,19 @@ void Piece::setPosition(std::string& place)
 	}
 	else
 	{
-		this->_position[0] = place[0] - 'a';
-		this->_position[1] = place[1] - '0';
+		this->_position[1] = place[0] - 'a';
+		this->_position[0] = place[1] - '0';
 	}
 }
 
 void Piece::setPositionX(int x)
 {
-	this->_position[0] = x;
+	this->_position[1] = x;
 }
 
 void Piece::setPositionY(int y)
 {
-	this->_position[1] = y;
+	this->_position[0] = y;
 }
 
 void Piece::setValue(char value)
@@ -54,12 +54,12 @@ char Piece::getValue() const
 
 int Piece::getPositionX()
 {
-	return this->_position[0];
+	return this->_position[1];
 }
 
 int Piece::getPositionY()
 {
-	return this->_position[1];
+	return this->_position[0];
 }
 
 bool Piece::isPieceWhite()
