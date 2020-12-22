@@ -10,7 +10,7 @@ protected:
 public:
 	//empty constructor for nullpiece
 	Piece();
-	Piece(std::string& place, bool isWhite);
+	Piece(int x,int y, bool isWhite);
 	virtual int isLegal(Piece*& board, std::string dst) = 0;
 	void setPosition(std::string& place);
 	void setPositionX(int x);

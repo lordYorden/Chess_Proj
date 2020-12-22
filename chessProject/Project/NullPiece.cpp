@@ -1,8 +1,8 @@
 #include "NullPiece.h"
 #define SYMBOL '#'
 
-NullPiece::NullPiece(std::string& place, bool isWhite):
-	Piece(place, isWhite)
+NullPiece::NullPiece(int x,int y, bool isWhite):
+	Piece(x,y, isWhite)
 {
 	this->setValue(SYMBOL);
 }

@@ -8,10 +8,11 @@ Piece::Piece() :
 	setPositionY(DEFAULT);
 }
 
-Piece::Piece(std::string& place, bool isWhite):
+Piece::Piece(int x,int y, bool isWhite):
 	_isWhite(isWhite)
 {
-	setPosition(place);
+	setPositionX(x);
+	setPositionY(y);
 }
 
 void Piece::setPosition(std::string& place)

@@ -2,8 +2,8 @@
 #define BLACK 'q'
 #define WHITE 'Q'
 
-Queen::Queen(std::string& place, bool isWhite):
-    Piece(place, isWhite)
+Queen::Queen(int x,int y, bool isWhite):
+    Piece(x,y, isWhite)
 {
 	if (this->_isWhite)
 	{

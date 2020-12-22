@@ -5,6 +5,6 @@
 #include <iostream>
 class King : public Piece
 {
-	King(std::string& place, bool isWhite);
+	King(int x,int y, bool isWhite);
 	virtual int isLegal(Piece*& board, std::string& dst);
 };

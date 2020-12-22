@@ -1,10 +1,10 @@
 #pragma once
 #include "Knight.h"
-#define BLACK 'k'
-#define WHITE 'K'
+#define BLACK 'n'
+#define WHITE 'N'
 
-Knight::Knight(std::string& place, bool isWhite):
-	Piece(place, isWhite)
+Knight::Knight(int x,int y, bool isWhite):
+	Piece(x,y, isWhite)
 {
 	if (this->_isWhite)
 	{

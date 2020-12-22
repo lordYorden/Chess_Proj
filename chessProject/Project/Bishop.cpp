@@ -1,7 +1,7 @@
 #include "Bishop.h"
 
-Bishop::Bishop(std::string& place, bool isWhite) :
-	Piece(place,isWhite)
+Bishop::Bishop(int x,int y, bool isWhite) :
+	Piece(x,y,isWhite)
 {
 	if (this->_isWhite)
 	{

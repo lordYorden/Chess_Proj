@@ -1,8 +1,8 @@
 #include "Rook.h"
 #define BLACK 'r'
 #define WHITE 'R'
-Rook::Rook(std::string& place, bool isWhite) :
-	Piece(place, isWhite)
+Rook::Rook(int x,int y, bool isWhite) :
+	Piece(x,y, isWhite)
 {
 	if (this->_isWhite)
 	{
@@ -18,6 +18,7 @@ int Rook::isLegal(Piece*& board, std::string& dst)
 	int answer = 0;
 	if (dst[0] == this->getPositionX() + 97 && dst[1] == this->getPositionY() + 48) answer = 7;
 	else if (dst[0] != this->getPositionX() + 97 || dst[1] != this->getPositionY()+48)answer = 6;
+	else if((dst[0] > 'h' || dst[0] < 'a') || (dst[1] < '1' || dst[1] > '8'))
 	//CONTINUE
 	
 

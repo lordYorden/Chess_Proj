@@ -2,8 +2,8 @@
 #define BLACK 'p'
 #define WHITE 'P'
 
-Pawn::Pawn(std::string& place, bool isWhite):
-	Piece(place, isWhite), _isFirstMove(true)
+Pawn::Pawn(int x,int y, bool isWhite):
+	Piece(x,y, isWhite), _isFirstMove(true)
 {
 	if (this->_isWhite)
 	{

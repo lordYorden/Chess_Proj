@@ -1,7 +1,7 @@
 #include "King.h"
 
-King::King(std::string& place, bool isWhite) :
-	Piece(place,isWhite)
+King::King(int x,int y, bool isWhite) :
+	Piece(x,y,isWhite)
 {
 	if (this->_isWhite)
 	{

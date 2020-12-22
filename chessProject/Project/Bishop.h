@@ -5,6 +5,6 @@
 #define WHITE 'B'
 class Bishop : public Piece
 {
-	Bishop(std::string& place, bool isWhite);
+	Bishop(int x,int y, bool isWhite);
 	virtual int isLegal(Piece*& board, std::string& dst);
 };
