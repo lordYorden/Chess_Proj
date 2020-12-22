@@ -20,7 +20,7 @@ Knight::~Knight()
 {
 }
 
-int Knight::isLegal(Piece*& board, std::string dst)
+int Knight::isLegal(Piece*& board, std::string& dst)
 {
 	//todo
 }
