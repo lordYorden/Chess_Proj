@@ -1,4 +1,12 @@
 #include "Piece.h"
+#define EMPTY '#'
+#define DEFAULT 0
+Piece::Piece() :
+	_isWhite(false), _value(EMPTY)
+{
+	setPositionX(DEFAULT);
+	setPositionY(DEFAULT);
+}
 
 Piece::Piece(std::string& place, bool isWhite):
 	_isWhite(isWhite)
@@ -23,9 +31,24 @@ void Piece::setPosition(std::string& place)
 	}
 }
 
+void Piece::setPositionX(int x)
+{
+	this->_position[0] = x;
+}
+
+void Piece::setPositionY(int y)
+{
+	this->_position[1] = y;
+}
+
 void Piece::setValue(char value)
 {
 	this->_value = value;
+}
+
+char Piece::getValue() const
+{
+	return this->_value;
 }
 
 int Piece::getPositionX()
