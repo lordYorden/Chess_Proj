@@ -12,7 +12,8 @@ Bishop::Bishop(int x,int y, bool isWhite) :
 		setValue(BLACK);
 	}
 }
-int Bishop::isLegal(Piece*& board, std::string& dst)
+int Bishop::isLegal(Piece** board, std::string& dst)
 {
 	//TODO
+	return 0;
 }

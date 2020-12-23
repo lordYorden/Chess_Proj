@@ -15,7 +15,8 @@ Queen::Queen(int x,int y, bool isWhite):
 	}
 }
 
-int Queen::isLegal(Piece*& board, std::string& dst)
+int Queen::isLegal(Piece** board, std::string& dst)
 {
     //todo
+	return 0;
 }

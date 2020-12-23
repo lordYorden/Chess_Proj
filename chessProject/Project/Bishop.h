@@ -7,5 +7,5 @@ class Bishop : public Piece
 {
 public:
 	Bishop(int x,int y, bool isWhite);
-	virtual int isLegal(Piece*& board, std::string& dst);
+	virtual int isLegal(Piece** board, std::string& dst);
 };
