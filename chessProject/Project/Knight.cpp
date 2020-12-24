@@ -31,14 +31,14 @@ int Knight::isLegal(Piece* board[8][8], std::string& dst)
 	{
 		//throw inputExption *why and how*
 	}
-	else if ((dst[1] > 'h' || dst[1] < 'a') || (dst[0] > '8' || dst[0] < '1'))
+	else if ((dst[0] > 'h' || dst[0] < 'a') || (dst[1] > '8' || dst[1] < '1'))
 	{
 		opCode = 5;
 	}
 	else
 	{
-		otherX = dst[1] - 'a';
-		otherY = dst[0] - '1';
+		otherX = dst[0] - 'a';
+		otherY = dst[1] - '1';
 	}
 
 	if (board[otherY][otherX]->getValue() != '#')
