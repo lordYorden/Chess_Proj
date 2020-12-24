@@ -8,5 +8,5 @@ public:
 	NullPiece(int x, int y);
 	NullPiece(Piece& other);
 	~NullPiece();
-	virtual int isLegal(Piece** board, std::string& dst);
+	virtual int isLegal(Piece* board[8][8], std::string& dst);
 };

@@ -2,6 +2,7 @@
 #include "Knight.h"
 #define BLACK 'n'
 #define WHITE 'N'
+#include <typeinfo>
 
 Knight::Knight(int x,int y, bool isWhite):
 	Piece(x,y, isWhite)
@@ -20,7 +21,7 @@ Knight::~Knight()
 {
 }
 
-int Knight::isLegal(Piece** board, std::string& dst)
+int Knight::isLegal(Piece* board[8][8], std::string& dst)
 {
 	int opCode = 0;
 	int otherX = 0;
@@ -40,23 +41,26 @@ int Knight::isLegal(Piece** board, std::string& dst)
 		otherY = dst[0] - '1';
 	}
 
-	if ((otherX == this->_position[1]) && (otherY == this->_position[0]))
+	if (board[otherY][otherX]->getValue() != '#')
 	{
-		opCode = 7;
-	}
-	else if (this->_isWhite == board[otherX][otherY].isPieceWhite())
-	{
-		opCode = 3;
-	}
 
+		if ((otherX == this->_position[1]) && (otherY == this->_position[0]))
+		{
+			opCode = 7;
+		}
+		else if (this->_isWhite == board[otherX][otherY]->isPieceWhite())
+		{
+			opCode = 3;
+		}
+	}
 
 	if (!opCode)
 	{
-		if((otherX == this->_position[1] + 1) && (otherY == this->_position[0] + 2))
+		if ((otherX == this->_position[1] + 1) && (otherY == this->_position[0] + 2))
 		{
 			opCode = 0;
 		}
-		else if((otherX == this->_position[1] + 2) && (otherY == this->_position[0] + 1))
+		else if ((otherX == this->_position[1] + 2) && (otherY == this->_position[0] + 1))
 		{
 			opCode = 0;
 		}
@@ -64,7 +68,7 @@ int Knight::isLegal(Piece** board, std::string& dst)
 		{
 			opCode = 0;
 		}
-		else if((otherX == this->_position[1] - 2) && (otherY == this->_position[0] + 1))
+		else if ((otherX == this->_position[1] - 2) && (otherY == this->_position[0] + 1))
 		{
 			opCode = 0;
 		}

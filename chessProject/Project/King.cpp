@@ -12,7 +12,7 @@ King::King(int x,int y, bool isWhite) :
 		setValue(BLACK);
 	}
 }
-int King::isLegal(Piece** board, std::string& dst)
+int King::isLegal(Piece* board[8][8], std::string& dst)
 {
 	//todo
 	return 0;

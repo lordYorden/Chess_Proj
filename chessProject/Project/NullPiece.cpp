@@ -18,7 +18,7 @@ NullPiece::~NullPiece()
 {
 }
 
-int NullPiece::isLegal(Piece** board, std::string& dst)
+int NullPiece::isLegal(Piece* board[8][8], std::string& dst)
 {
 	//todo
 	return 2;

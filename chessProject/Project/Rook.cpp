@@ -13,7 +13,7 @@ Rook::Rook(int x,int y, bool isWhite) :
 		setValue(BLACK);
 	}
 }
-int Rook::isLegal(Piece** board, std::string& dst)
+int Rook::isLegal(Piece* board[8][8], std::string& dst)
 {
 	int answer = 0;
 	if (dst[0] == this->getPositionX() + 97 && dst[1] == this->getPositionY() + 48) answer = 7;

@@ -19,7 +19,7 @@ Pawn::~Pawn()
 {
 }
 
-int Pawn::isLegal(Piece** board, std::string& dst)
+int Pawn::isLegal(Piece* board[8][8], std::string& dst)
 {
 	//todo
 	return 0;
