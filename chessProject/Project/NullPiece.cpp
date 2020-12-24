@@ -12,6 +12,7 @@ NullPiece::NullPiece(Piece& other):
 {
 	this->setPositionX(other.getPositionX());
 	this->setPositionY(other.getPositionY());
+	this->setValue(SYMBOL);
 }
 
 NullPiece::~NullPiece()

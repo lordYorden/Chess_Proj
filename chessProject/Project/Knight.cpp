@@ -48,7 +48,7 @@ int Knight::isLegal(Piece* board[8][8], std::string& dst)
 		{
 			opCode = 7;
 		}
-		else if (this->_isWhite == board[otherX][otherY]->isPieceWhite())
+		else if (this->_isWhite == board[otherY][otherX]->isPieceWhite())
 		{
 			opCode = 3;
 		}
