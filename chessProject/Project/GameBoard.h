@@ -7,9 +7,10 @@ private:
 	bool _isWhiteTurn;
 
 	void initBoard();
-	bool checkForEat(std::string& move);
-	void swap(Piece* a, Piece* b);
+	bool checkForEat(Piece* src, Piece* dst);
+	void swap(Piece* src, Piece* dst);
 	Piece*& placeToPiece(std::string& place);
+	void flipTurn();
 
 public:
 	GameBoard();

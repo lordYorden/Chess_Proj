@@ -27,13 +27,27 @@ int GameBoard::move(std::string& move)
 	int opCode = 0;
 	std::cout << "sep: " << playerStr << ", " << dst << std::endl;
 	Piece* srcPlayer = placeToPiece(playerStr);
+	Piece* dstPlayer = placeToPiece(dst);
+	Piece* nullPlayer = nullptr;
 	opCode = srcPlayer->isLegal(this->_board, dst);
 
-	if(opCode == 0 || opCode == 1 || opCode == 8)
+	if (opCode == 0 || opCode == 1 || opCode == 8)
 	{
-		Piece* dstPlayer = placeToPiece(dst);
-		swap(srcPlayer, dstPlayer);
+		if (checkForEat(srcPlayer, dstPlayer))
+		{
+			nullPlayer = new NullPiece(*dstPlayer);
+			this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = nullPlayer;
+			delete dstPlayer;
+			swap(srcPlayer, nullPlayer);
+		}
+		else
+		{
+			swap(srcPlayer, dstPlayer);
+		}
 	}
+
+
+	flipTurn();
 	return opCode;
 }
 
@@ -53,31 +67,31 @@ std::string GameBoard::toStringBoard()
 
 void GameBoard::initBoard()
 {
-	this->_board[0][0] = new Rook(0, 0, false);
-	this->_board[0][7] = new Rook(7, 0, false);
-	this->_board[7][7] = new Rook(7, 7, true);
-	this->_board[7][0] = new Rook(0, 7, true);
+	this->_board[0][0] = new Rook(0, 0, true);
+	this->_board[0][7] = new Rook(7, 0, true);
+	this->_board[7][7] = new Rook(7, 7, false);
+	this->_board[7][0] = new Rook(0, 7, false);
 
-	this->_board[0][1] = new Knight(1, 0, false);
-	this->_board[0][6] = new Knight(6, 0, false);
-	this->_board[7][6] = new Knight(6, 7, true);
-	this->_board[7][1] = new Knight(1, 7, true);
+	this->_board[0][1] = new Knight(1, 0, true);
+	this->_board[0][6] = new Knight(6, 0, true);
+	this->_board[7][6] = new Knight(6, 7, false);
+	this->_board[7][1] = new Knight(1, 7, false);
 
-	this->_board[0][2] = new Bishop(2, 0, false);
-	this->_board[0][5] = new Bishop(5, 0, false);
-	this->_board[7][5] = new Bishop(5, 7, true);
-	this->_board[7][2] = new Bishop(2, 7, true);
+	this->_board[0][2] = new Bishop(2, 0, true);
+	this->_board[0][5] = new Bishop(5, 0, true);
+	this->_board[7][5] = new Bishop(5, 7, false);
+	this->_board[7][2] = new Bishop(2, 7, false);
 
-	this->_board[0][3] = new King(3, 0, false);
-	this->_board[7][3] = new King(3, 7, true);
+	this->_board[0][3] = new King(3, 0, true);
+	this->_board[7][3] = new King(3, 7, false);
 
-	this->_board[0][4] = new Queen(4, 0, false);
-	this->_board[7][4] = new Queen(4, 7, true);
+	this->_board[0][4] = new Queen(4, 0, true);
+	this->_board[7][4] = new Queen(4, 7, false);
 
 	for (int i = 0; i < 8; i++)
 	{
-		this->_board[6][i] = new Pawn(i, 6, true);
-		this->_board[1][i] = new Pawn(i, 1, false);
+		this->_board[6][i] = new Pawn(i, 6, false);
+		this->_board[1][i] = new Pawn(i, 1, true);
 	}
 
 	for (int i = 2; i < 6; i++)
@@ -90,17 +104,26 @@ void GameBoard::initBoard()
 
 }
 
-void GameBoard::swap(Piece* a, Piece* b)
+bool GameBoard::checkForEat(Piece* src, Piece* dst)
 {
-	int tempX = b->getPositionX();
-	int tempY = b->getPositionY();
-	this->_board[a->getPositionY()][a->getPositionX()] = b;
-	this->_board[b->getPositionY()][b->getPositionX()] = a;
+	if ((src->isPieceWhite() != dst->isPieceWhite()) && (src->getValue() != '#' || dst->getValue() != '#'))
+	{
+		return true;
+	}
+	return false;
+}
 
-	b->setPositionX(a->getPositionX());
-	b->setPositionY(a->getPositionY());
-	a->setPositionX(tempX);
-	a->setPositionY(tempY);
+void GameBoard::swap(Piece* src, Piece* dst)
+{
+	int tempX = dst->getPositionX();
+	int tempY = dst->getPositionY();
+	this->_board[src->getPositionY()][src->getPositionX()] = dst;
+	this->_board[dst->getPositionY()][dst->getPositionX()] = src;
+
+	dst->setPositionX(src->getPositionX());
+	dst->setPositionY(src->getPositionY());
+	src->setPositionX(tempX);
+	src->setPositionY(tempY);
 }
 
 Piece*& GameBoard::placeToPiece(std::string& place)
@@ -124,4 +147,16 @@ Piece*& GameBoard::placeToPiece(std::string& place)
 	}
 	Piece* piece = this->_board[otherY][otherX];
 	return piece;
+}
+
+void GameBoard::flipTurn()
+{
+	if (this->_isWhiteTurn)
+	{
+		this->_isWhiteTurn = false;
+	}
+	else
+	{
+		this->_isWhiteTurn = true;
+	}
 }
