@@ -28,7 +28,7 @@ void Piece::setPosition(std::string& place)
 	else
 	{
 		this->_position[1] = place[0] - 'a';
-		this->_position[0] = place[1] - '0';
+		this->_position[0] = place[1] - '1';
 	}
 }
 

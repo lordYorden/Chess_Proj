@@ -113,14 +113,14 @@ Piece*& GameBoard::placeToPiece(std::string& place)
 	{
 		//throw inputExption *why and how*
 	}
-	else if ((place[1] > 'h' || place[1] < 'a') || (place[0] > '8' || place[0] < '1'))
+	else if ((place[0] > 'h' || place[0] < 'a') || (place[1] > '8' || place[1] < '1'))
 	{
 		//throw outOfRange
 	}
 	else
 	{
-		otherX = place[1] - 'a';
-		otherY = place[0] - '1';
+		otherX = place[0] - 'a';
+		otherY = place[1] - '1';
 	}
 	Piece* piece = this->_board[otherY][otherX];
 	return piece;
