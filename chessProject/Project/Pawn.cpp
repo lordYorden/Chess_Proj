@@ -65,6 +65,10 @@ int Pawn::isLegal(Piece* board[8][8], std::string& dst)
 					this->_isFirstMove = false;
 					return opCode;
 				}
+				else
+				{
+					this->_isFirstMove = false;
+				}
 			}
 			else
 			{
@@ -73,6 +77,10 @@ int Pawn::isLegal(Piece* board[8][8], std::string& dst)
 					opCode = 0;
 					this->_isFirstMove = false;
 					return opCode;
+				}
+				else
+				{
+					this->_isFirstMove = false;
 				}
 			}
 		}
