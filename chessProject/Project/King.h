@@ -8,4 +8,5 @@ class King : public Piece
 public:
 	King(int x,int y, bool isWhite);
 	virtual int isLegal(Piece* board[8][8], std::string& dst);
+	bool isValid(Piece* board[8][8], std::string& dst);
 };
