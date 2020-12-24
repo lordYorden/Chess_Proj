@@ -14,6 +14,106 @@ Bishop::Bishop(int x,int y, bool isWhite) :
 }
 int Bishop::isLegal(Piece* board[8][8], std::string& dst)
 {
-	//TODO
-	return 0;
+	int opCode = 0;
+	int otherX = 0;
+	int otherY = 0;
+
+	if (dst.length() > 2)
+	{
+		//throw inputExption *why and how*
+	}
+	else if ((dst[0] > 'h' || dst[0] < 'a') || (dst[1] > '8' || dst[1] < '1'))
+	{
+		opCode = 5;
+	}
+	else
+	{
+		otherX = dst[0] - 'a';
+		otherY = dst[1] - '1';
+	}
+
+
+	if (board[otherY][otherX]->getValue() != '#')
+	{
+
+		if ((otherX == this->_position[1]) && (otherY == this->_position[0]))
+		{
+			opCode = 7;
+		}
+		else if (this->_isWhite == board[otherY][otherX]->isPieceWhite())
+		{
+			opCode = 3;
+		}
+	}
+
+	if (!opCode)
+	{
+		opCode = 6;
+		if (this->_position[1] < otherX && this->_position[0] < otherY)
+		{
+			for (int x = this->_position[1] + 1, y = this->_position[0] + 1; x < 8 && y < 8; x++, y++)
+			{
+				if (x == otherX && y == otherY)
+				{
+					opCode = 0;
+					return opCode;
+				}
+				else if (board[y][x]->getValue() != '#')
+				{
+					opCode = 6;
+					return opCode;
+				}
+			}
+		}
+		else if (this->_position[1] > otherX && this->_position[0] > otherY)
+		{
+			for (int x = this->_position[1] - 1, y = this->_position[0] - 1; x >= 0 && y >= 0; x--, y--)
+			{
+				if (x == otherX && y == otherY)
+				{
+					opCode = 0;
+					return opCode;
+				}
+				else if (board[y][x]->getValue() != '#')
+				{
+					opCode = 6;
+					return opCode;
+				}
+			}
+		}
+		else if (this->_position[1] > otherX && this->_position[0] < otherY)
+		{
+			for (int x = this->_position[1] - 1, y = this->_position[0] + 1; x >= 0 && y < 7; x--, y++)
+			{
+				if (x == otherX && y == otherY)
+				{
+					opCode = 0;
+					return opCode;
+				}
+				else if (board[y][x]->getValue() != '#')
+				{
+					opCode = 6;
+					return opCode;
+				}
+			}
+		}
+		else if (this->_position[1] < otherX && this->_position[0] > otherY)
+		{
+			for (int x = this->_position[1] + 1, y = this->_position[0] - 1; x < 7 && y >= 0; x++, y--)
+			{
+				if (x == otherX && y == otherY)
+				{
+					opCode = 0;
+					return opCode;
+				}
+				else if (board[y][x]->getValue() != '#')
+				{
+					opCode = 6;
+					return opCode;
+				}
+			}
+		}
+	}
+
+	return opCode;
 }
