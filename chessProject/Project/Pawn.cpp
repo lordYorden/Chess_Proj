@@ -55,35 +55,6 @@ int Pawn::isLegal(Piece* board[8][8], std::string& dst)
 
 	if (!opCode)
 	{
-		if(this->_isFirstMove)
-		{
-			if (this->_isWhite)
-			{
-				if (this->_position[1] == otherX && this->_position[0] + 2 == otherY)
-				{
-					opCode = 0;
-					this->_isFirstMove = false;
-					return opCode;
-				}
-				else
-				{
-					this->_isFirstMove = false;
-				}
-			}
-			else
-			{
-				if (this->_position[1] == otherX && this->_position[0] - 2 == otherY)
-				{
-					opCode = 0;
-					this->_isFirstMove = false;
-					return opCode;
-				}
-				else
-				{
-					this->_isFirstMove = false;
-				}
-			}
-		}
 
 		if (this->_isWhite)
 		{
@@ -103,8 +74,38 @@ int Pawn::isLegal(Piece* board[8][8], std::string& dst)
 		}
 
 		opCode = 6;
-		if (otherX == _position[1])
+		if (otherX == _position[1] && board[otherY][otherX]->getValue() == '#')
 		{
+			if (this->_isFirstMove)
+			{
+				if (this->_isWhite)
+				{
+					if (this->_position[1] == otherX && this->_position[0] + 2 == otherY)
+					{
+						opCode = 0;
+						this->_isFirstMove = false;
+						return opCode;
+					}
+					else
+					{
+						this->_isFirstMove = false;
+					}
+				}
+				else
+				{
+					if (this->_position[1] == otherX && this->_position[0] - 2 == otherY)
+					{
+						opCode = 0;
+						this->_isFirstMove = false;
+						return opCode;
+					}
+					else
+					{
+						this->_isFirstMove = false;
+					}
+				}
+			}
+
 			if (otherY == _position[0] + 1 || otherY == _position[0] - 1)
 			{
 				opCode = 0;
