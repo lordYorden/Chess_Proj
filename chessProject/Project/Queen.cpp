@@ -60,12 +60,13 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 				if (x == otherX && y == otherY)
 				{
 					opCode = 0;
+					return opCode;
 				}
-				/*else if (board[y][x]->getValue() != '#' && this->_isWhite == board[y][x]->isPieceWhite())
+				else if (board[y][x]->getValue() != '#')
 				{
 					opCode = 6;
 					return opCode;
-				}*/
+				}
 			}
 		}
 		else if (this->_position[1] > otherX && this->_position[0] > otherY)
@@ -75,12 +76,13 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 				if (x == otherX && y == otherY)
 				{
 					opCode = 0;
+					return opCode;
 				}
-				/*else if (board[y][x]->getValue() != '#' && this->_isWhite == board[y][x]->isPieceWhite())
+				else if (board[y][x]->getValue() != '#')
 				{
 					opCode = 6;
 					return opCode;
-				}*/
+				}
 			}
 		}
 		else if (this->_position[1] > otherX && this->_position[0] < otherY)
@@ -90,12 +92,13 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 				if (x == otherX && y == otherY)
 				{
 					opCode = 0;
+					return opCode;
 				}
-				/*else if (board[y][x]->getValue() != '#' && this->_isWhite == board[y][x]->isPieceWhite())
+				else if (board[y][x]->getValue() != '#')
 				{
 					opCode = 6;
 					return opCode;
-				}*/
+				}
 			}
 		}
 		else if (this->_position[1] < otherX && this->_position[0] > otherY)
@@ -105,12 +108,13 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 				if (x == otherX && y == otherY)
 				{
 					opCode = 0;
+					return opCode;
 				}
-				/*else if(board[y][x]->getValue() != '#' && this->_isWhite == board[y][x]->isPieceWhite())
+				else if (board[y][x]->getValue() != '#')
 				{
 					opCode = 6;
 					return opCode;
-				}*/
+				}
 			}
 		}
 	}
