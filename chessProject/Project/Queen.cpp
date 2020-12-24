@@ -20,7 +20,6 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 	int opCode = 0;
 	int otherX = 0;
 	int otherY = 0;
-	int errorFlag = 0;
 
 	if (dst.length() > 2)
 	{
