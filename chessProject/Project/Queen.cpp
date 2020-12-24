@@ -50,10 +50,81 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 		}
 	}
 
+	int y = 0;
 	if (!opCode)
 	{
-		opCode = 6;
-		if (this->_position[1] < otherX && this->_position[0] < otherY)
+		opCode = 6; // defult case
+		if (otherX == this->_position[1])
+		{
+			if (otherY < this->_position[0])
+			{
+				for (y = this->_position[0] - 1; y >= 0; y--)
+				{
+					if (y == otherY)
+					{
+						opCode = 0;
+						return opCode;
+					}
+					else if (board[y][otherX]->getValue() != '#')
+					{
+						opCode = 6;
+						return opCode;
+					}
+				}
+			}
+			else if (otherY > this->_position[0])
+			{
+				for (int y = this->_position[0] + 1; y < 8; y++)
+				{
+					if (y == otherY)
+					{
+						opCode = 0;
+						return opCode;
+					}
+					else if (board[y][otherX]->getValue() != '#')
+					{
+						opCode = 6;
+						return opCode;
+					}
+				}
+			}
+		}
+		else if(otherY == this->_position[0])
+		{
+			if (otherX < this->_position[1])
+			{
+				for (int x = this->_position[1] - 1; x >= 0; x--)
+				{
+					if (x == otherX)
+					{
+						opCode = 0;
+						return opCode;
+					}
+					else if (board[otherY][x]->getValue() != '#')
+					{
+						opCode = 6;
+						return opCode;
+					}
+				}
+			}
+			else if (otherX > this->_position[1])
+			{
+				for (int x = this->_position[1] + 1; x < 8; x++)
+				{
+					if (x == otherX)
+					{
+						opCode = 0;
+						return opCode;
+					}
+					else if (board[otherY][x]->getValue() != '#')
+					{
+						opCode = 6;
+						return opCode;
+					}
+				}
+			}
+		}
+		else if (this->_position[1] < otherX && this->_position[0] < otherY)
 		{
 			for (int x = this->_position[1]+1, y = this->_position[0]+1; x < 8 && y < 8; x++, y++)
 			{
