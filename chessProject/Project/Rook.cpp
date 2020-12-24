@@ -18,10 +18,10 @@ int Rook::isLegal(Piece* board[8][8], std::string& dst)
 	int answer = 0;
 	int y = dst[1] - '1';
 	int x = dst[0] - 'a';
-	//std::cout << board[y][x]->getValue() << std::endl;;
+	std::cout << board[y][x]->getValue() << std::endl;;
 	std::cout << board[this->_position[0]][this->_position[1]]->getValue() << std::endl;
 	if ((dst[0] > 'h' || dst[0] < 'a') || (dst[1] < '1' || dst[1] > '8'))answer = 5;
-	else if (board[y][x]->isPieceWhite() != this->isPieceWhite() && board[this->_position[1]][this->_position[0]]->getValue() != '#') answer = 2;
+	else if (board[y][x]->isPieceWhite() == this->isPieceWhite() && board[this->_position[1]][this->_position[0]]->getValue() != '#') answer = 2;
 	else if (x == this->getPositionX()  && y == this->getPositionY() ) answer = 7;
 	else if (x != this->getPositionX() && y != this->getPositionY()) answer = 6;
 	else if (this->inWay(board, dst))answer = 3;
