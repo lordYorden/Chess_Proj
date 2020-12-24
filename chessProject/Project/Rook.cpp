@@ -21,13 +21,11 @@ int Rook::isLegal(Piece* board[8][8], std::string& dst)
 	std::cout << board[y][x]->getValue() << std::endl;;
 	std::cout << board[this->_position[0]][this->_position[1]]->getValue() << std::endl;
 	if ((dst[0] > 'h' || dst[0] < 'a') || (dst[1] < '1' || dst[1] > '8'))answer = 5;
-	else if (board[y][x]->isPieceWhite() == this->isPieceWhite() && board[this->_position[1]][this->_position[0]]->getValue() != '#') answer = 2;
-	else if (x == this->getPositionX()  && y == this->getPositionY() ) answer = 7;
-	else if (x != this->getPositionX() && y != this->getPositionY()) answer = 6;
-	else if (this->inWay(board, dst))answer = 3;
+	else if (board[this->_position[0]][this->_position[1]]->getValue() == '#') answer = 2;
+	else if (x == this->getPositionX() && y == this->getPositionY()) answer = 7;
+	else if (board[y][x]->getValue() != '#' && this->_isWhite == board[y][x]->isPieceWhite())answer = 3;
+	else if ((this->_position[0] != y && this->_position[1] != x) || this->inWay(board, dst))answer = 6;
 	else answer = 0;
-
-
 	return answer;
 }
 
@@ -38,10 +36,10 @@ bool Rook::inWay(Piece* board[8][8], std::string& dst)
 	{
 		if (dst[0] - 'a' > this->_position[1])
 		{
-			for (int i = this->_position[1]+1; i <= dst[0] - 'a'; i++) //checking forward
+			for (int i = this->_position[1]+1; i <= dst[0] - 'a'-1; i++) //checking forward
 			{
 				std::cout << "horizontalf" << std::endl;
-				if (board[this->_position[0]][i]->isPieceWhite() == this->isPieceWhite() && board[this->_position[0]][i]->getValue() != '#')
+				if ((board[this->_position[0]][i]->getValue() != '#'))
 				{
 					answer = true;
 				}
@@ -49,10 +47,10 @@ bool Rook::inWay(Piece* board[8][8], std::string& dst)
 		}
 		else
 		{
-			for (int i =dst[0]-'a'+1;i >= this->_position[1]; i--) //checking backwards
+			for (int i =dst[0]-'a'+1;i >= this->_position[1]+1; i--) //checking backwards
 			{
 				std::cout << "horizontalb" << std::endl;
-				if (board[this->_position[0]][i]->isPieceWhite() == this->isPieceWhite() && board[this->_position[0]][i]->getValue() != '#')
+				if ((board[this->_position[0]][i]->getValue() != '#'))
 				{
 					answer = true;
 				}
@@ -64,10 +62,10 @@ bool Rook::inWay(Piece* board[8][8], std::string& dst)
 	{
 		if (dst[1] - '1' > this->_position[0]) //checking forwards
 		{
-			for (int i = this->_position[0]+1; i <= dst[1] - '1' && !answer; i++)
+			for (int i = this->_position[0]+1; i <= dst[1] - '1'-1 && !answer; i++)
 			{
 				std::cout << "verticalf" << std::endl;
-				if (board[i][this->_position[1]]->isPieceWhite() == this->isPieceWhite() && (board[i][this->_position[1]]->getValue() != '#'))
+				if ((board[i][this->_position[1]]->getValue() != '#'))
 				{
 					answer = true;
 				}
@@ -75,10 +73,10 @@ bool Rook::inWay(Piece* board[8][8], std::string& dst)
 		}
 		else
 		{
-			for (int i = dst[1]-'1'+1 ; i >= this->_position[0] && !answer; i--) //checking checking backwards
+			for (int i = dst[1]-'1'+1 ; i >= this->_position[0]+1 && !answer; i--) //checking checking backwards
 			{
 				std::cout << "verticalb" << std::endl;
-				if (board[i][this->_position[1]]->isPieceWhite() == this->isPieceWhite() && (board[i][this->_position[1]]->getValue() != '#'))
+				if ((board[i][this->_position[1]]->getValue() != '#') )
 				{
 					answer = true;
 				}
