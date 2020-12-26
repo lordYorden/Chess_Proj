@@ -38,7 +38,7 @@ int GameBoard::move(std::string& move)
 		opCode = srcPlayer->isLegal(this->_board, dst);
 		if (opCode == 0)
 		{
-			if (srcPlayer->getValue() == 'k')
+			if (srcPlayer->getValue() == 'k' || srcPlayer->getValue() == 'K')
 			{
 				if (srcPlayer->isPieceWhite())
 				{
@@ -50,7 +50,7 @@ int GameBoard::move(std::string& move)
 				}
 			}
 
-			if (dstPlayer->getValue() == 'k')
+			if (dstPlayer->getValue() == 'k' || dstPlayer->getValue() == 'K')
 			{
 				opCode = 8;
 				return opCode;
@@ -97,16 +97,119 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 	int yB = _blackKingPlace[1] - '1';
 	int xW = _whiteKingPlace[0] - 'a';
 	int yW = _whiteKingPlace[1] - '1';
+
+	bool isFirstDiagonalInstance = false;
 	if (isCheckingWhite)
 	{
-		//checking diagonals
+		//checking white diagonals
+		for (int x = xW + 1, y = yW + 1; x < 8 && y < 8; x++, y++)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
+
+		isFirstDiagonalInstance = false;
+		for (int x = xW - 1, y = yW - 1; x >= 0 && y >= 0; x--, y--)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
+
+		isFirstDiagonalInstance = false;
+		for (int x = xW - 1, y = yW + 1; x >= 0 && y < 8; x--, y++)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
+			
+		isFirstDiagonalInstance = false;
+		for (int x = xW + 1, y = yW - 1; x < 8 && y >= 0; x++, y--)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
 		//checking lines
 		//checking frame
 		//checking knight placements
 	}
 	else
 	{
+		//checking black diagonals
+		isFirstDiagonalInstance = false;
+		for (int x = xB + 1, y = yB + 1; x < 8 && y < 8; x++, y++)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
 
+		isFirstDiagonalInstance = false;
+		for (int x = xB - 1, y = yB - 1; x >= 0 && y >= 0; x--, y--)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
+
+		isFirstDiagonalInstance = false;
+		for (int x = xB - 1, y = yB + 1; x >= 0 && y < 8; x--, y++)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
+
+		isFirstDiagonalInstance = false;
+		for (int x = xB + 1, y = yB - 1; x < 8 && y >= 0; x++, y--)
+		{
+			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && isFirstDiagonalInstance)
+			{
+				return true;
+			}
+			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
 	}
 		
 }
