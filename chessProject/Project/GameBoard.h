@@ -20,5 +20,6 @@ public:
 	void eat(std::string& move);
 	int move(std::string& move);
 	std::string toStringBoard();
+	bool isThreatened(bool isCheckingWhite);
 
 };

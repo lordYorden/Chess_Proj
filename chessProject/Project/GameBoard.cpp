@@ -80,7 +80,7 @@ int GameBoard::move(std::string& move)
 std::string GameBoard::toStringBoard()
 {
 	std::string boardStr = "";
-	for (int i = 0; i < 8; i++)
+	for (int i = 7; i >= 0; i--)
 	{
 		for (int j = 0; j < 8; j++)
 		{
@@ -89,6 +89,26 @@ std::string GameBoard::toStringBoard()
 		boardStr += '\n';
 	}
 	return boardStr;
+}
+
+bool GameBoard::isThreatened(bool isCheckingWhite)
+{
+	int xB = _blackKingPlace[0] - 'a';
+	int yB = _blackKingPlace[1] - '1';
+	int xW = _whiteKingPlace[0] - 'a';
+	int yW = _whiteKingPlace[1] - '1';
+	if (isCheckingWhite)
+	{
+		//checking diagonals
+		//checking lines
+		//checking frame
+		//checking knight placements
+	}
+	else
+	{
+
+	}
+		
 }
 
 void GameBoard::initBoard()
