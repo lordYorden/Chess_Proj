@@ -75,12 +75,18 @@ int GameBoard::move(std::string& move)
 			else if (isThreatened(this->_isWhiteTurn))
 			{
 				opCode = 4;
-				swap(nullPlayer, dstPlayer);
+				
+				if (isEat)
+				{
+					nullPlayer = new NullPiece(*dstPlayer);
+					swap(nullPlayer, dstPlayer);
+				}
 				swap(dstPlayer, srcPlayer);
 				if (isEat)
 				{
 					delete nullPlayer;
 				}
+				
 			}
 			if (opCode == 0 || opCode == 1 || opCode == 8)
 			{
