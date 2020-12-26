@@ -209,9 +209,48 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 			}
 		}
 
+		if ((yW - 1 > 0 && xW + 1 < 8) && _board[yW - 1][xW + 1]->getValue() == 'p')
+		{
+			return true;
+		}
+		else if ((yB - 1 > 0 && xW - 1 > 0) && _board[yB - 1][xW - 1]->getValue() == 'p')
+		{
+			return true;
+		}
+		//checking knights
+		if ((yW + 2 < 8 && xW + 2 < 8) && _board[yW + 2][xW + 1]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW + 1 < 8 && xW + 2 < 8) && _board[yW + 1][xW + 2]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW + 2 < 8 && xW - 1 > 0) && _board[yW + 2][xW - 1]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW + 1 < 8 && xW - 2 > 0) && _board[yW + 1][xW - 2]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW - 1 > 0 && xW - 2 > 0) && _board[yW - 1][xW - 2]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW - 2 > 0 && xW - 1 > 0) && _board[yW - 2][xW - 1]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW - 2 > 0 && xW + 1 < 8) && _board[yW - 2][xW + 1]->getValue() == 'n')
+		{
+			return true;
+		}
+		else if ((yW - 1 > 0 && xW + 2 < 8) && _board[yW - 1][xW + 2]->getValue() == 'n')
+		{
+			return true;
+		}
 
-		//checking frame
-		//checking knight placements
 		
 	}
 	else
@@ -324,8 +363,49 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 			}
 		}
 
-		//checking frame
-		//checking knight placements
+		if ((yB-1 > 0 && xB +1 < 8) && _board[yB - 1][xB + 1]->getValue() == 'P' )
+		{
+			return true;
+		}
+		else if ((yB - 1 > 0 && xB - 1 > 0) && _board[yB - 1][xB - 1]->getValue() == 'P')
+		{
+			return true;
+		}
+		//checking knight
+		if ((yB + 2 < 8 && xB + 2 < 8) && _board[yB + 2][xB + 1]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB + 1 < 8 && xB + 2 < 8) && _board[yB + 1][xB + 2]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB + 2 < 8 && xB - 1 > 0) && _board[yB + 2][xB - 1]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB + 1 < 8 && xB - 2 > 0) && _board[yB + 1][xB - 2]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB - 1 > 0 && xB - 2 > 0) && _board[yB - 1][xB - 2]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB - 2 > 0 && xB - 1 > 0) && _board[yB - 2][xB - 1]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB - 2 > 0 && xB + 1 < 8) && _board[yB - 2][xB + 1]->getValue() == 'N')
+		{
+			return true;
+		}
+		else if ((yB-1> 0 && xB + 2 < 8) && _board[yB - 1][xB + 2]->getValue() == 'N')
+		{
+			return true;
+		}
+
+			
 	}
 		
 }
