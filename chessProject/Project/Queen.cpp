@@ -157,7 +157,7 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 		}
 		else if (this->_position[1] > otherX && this->_position[0] < otherY)
 		{
-			for (int x = this->_position[1]-1, y = this->_position[0]+1; x >= 0 && y < 7; x--, y++)
+			for (int x = this->_position[1]-1, y = this->_position[0]+1; x >= 0 && y < 8; x--, y++)
 			{
 				if (x == otherX && y == otherY)
 				{
@@ -173,7 +173,7 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 		}
 		else if (this->_position[1] < otherX && this->_position[0] > otherY)
 		{
-			for (int x = this->_position[1]+1, y = this->_position[0]-1; x < 7 && y >= 0; x++, y--)
+			for (int x = this->_position[1]+1, y = this->_position[0]-1; x < 8 && y >= 0; x++, y--)
 			{
 				if (x == otherX && y == otherY)
 				{
