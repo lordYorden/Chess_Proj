@@ -49,7 +49,6 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 		}
 	}
 
-	int y = 0;
 	if (!opCode)
 	{
 		opCode = 6; // defult case
@@ -57,7 +56,7 @@ int Queen::isLegal(Piece* board[8][8], std::string& dst)
 		{
 			if (otherY < this->_position[0])
 			{
-				for (y = this->_position[0] - 1; y >= 0; y--)
+				for (int y = this->_position[0] - 1; y >= 0; y--)
 				{
 					if (y == otherY)
 					{

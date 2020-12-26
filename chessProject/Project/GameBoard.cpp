@@ -27,6 +27,7 @@ int GameBoard::move(std::string& move)
 {
 	std::string playerStr = move.substr(0, 2);
 	std::string dst = move.substr(2, 2);
+	bool isEat = false;
 	int opCode = 0;
 	std::cout << "sep: " << playerStr << ", " << dst << std::endl;
 	Piece* srcPlayer = placeToPiece(playerStr);
@@ -55,19 +56,36 @@ int GameBoard::move(std::string& move)
 				opCode = 8;
 				return opCode;
 			}
-
-			else if (checkForEat(srcPlayer, dstPlayer))
+			isEat = checkForEat(srcPlayer, dstPlayer);
+			if (isEat)
 			{
 				nullPlayer = new NullPiece(*dstPlayer);
 				this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = nullPlayer;
-				delete dstPlayer;
 				swap(srcPlayer, nullPlayer);
 			}
 			else
 			{
 				swap(srcPlayer, dstPlayer);
 			}
-			flipTurn();
+
+			if (isThreatened(!this->_isWhiteTurn))
+			{
+				opCode = 1;
+			}
+			else if (isThreatened(this->_isWhiteTurn))
+			{
+				opCode = 4;
+				swap(nullPlayer, dstPlayer);
+				swap(dstPlayer, srcPlayer);
+				if (isEat)
+				{
+					delete nullPlayer;
+				}
+			}
+			if (opCode == 0 || opCode == 1 || opCode == 8)
+			{
+				flipTurn();
+			}
 		}
 	}
 	else
@@ -105,11 +123,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		//checking white diagonals
 		for (int x = xW + 1, y = yW + 1; x < 8 && y < 8; x++, y++)
 		{
-			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -118,11 +136,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xW - 1, y = yW - 1; x >= 0 && y >= 0; x--, y--)
 		{
-			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -131,11 +149,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xW - 1, y = yW + 1; x >= 0 && y < 8; x--, y++)
 		{
-			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -144,11 +162,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xW + 1, y = yW - 1; x < 8 && y >= 0; x++, y--)
 		{
-			if (this->_board[x][y]->getValue() == 'q' || this->_board[x][y]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -159,11 +177,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int y = yW - 1; y >= 0; y--)
 		{
-			if (this->_board[xW][y]->getValue() == 'q' || this->_board[xW][y]->getValue() == 'b' && !isFirstLineInstance)
+			if (this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'b' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[xW][y]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[y][xW]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
@@ -172,11 +190,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int y = yW + 1; y < 8; y++)
 		{
-			if (this->_board[xW][y]->getValue() == 'q' || this->_board[xW][y]->getValue() == 'b' && !isFirstLineInstance)
+			if (this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'b' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[xW][y]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[y][xW]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
@@ -186,11 +204,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int x = xW - 1; x >= 0; x--)
 		{
-			if (this->_board[x][yW]->getValue() == 'q' || this->_board[x][yW]->getValue() == 'b' && !isFirstLineInstance)
+			if (this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'b' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][yW]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[yW][x]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
@@ -199,25 +217,26 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int x = xW + 1; x < 8; x++)
 		{
-			if (this->_board[x][yW]->getValue() == 'q' || this->_board[x][yW]->getValue() == 'b' && !isFirstLineInstance)
+			if (this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'b' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][yW]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[yW][x]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
 		}
 
+		//checking pawn white
 		if ((yW - 1 > 0 && xW + 1 < 8) && _board[yW - 1][xW + 1]->getValue() == 'p')
 		{
 			return true;
 		}
-		else if ((yB - 1 > 0 && xW - 1 > 0) && _board[yB - 1][xW - 1]->getValue() == 'p')
+		else if ((yW - 1 > 0 && xW - 1 > 0) && _board[yW - 1][xW - 1]->getValue() == 'p')
 		{
 			return true;
 		}
-		//checking knights
+		//checking knights black
 		if ((yW + 2 < 8 && xW + 2 < 8) && _board[yW + 2][xW + 1]->getValue() == 'n')
 		{
 			return true;
@@ -259,11 +278,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB + 1, y = yB + 1; x < 8 && y < 8; x++, y++)
 		{
-			if (this->_board[x][y]->getValue() == 'Q' || this->_board[x][y]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -272,11 +291,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB - 1, y = yB - 1; x >= 0 && y >= 0; x--, y--)
 		{
-			if (this->_board[x][y]->getValue() == 'Q' || this->_board[x][y]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -285,11 +304,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB - 1, y = yB + 1; x >= 0 && y < 8; x--, y++)
 		{
-			if (this->_board[x][y]->getValue() == 'Q' || this->_board[x][y]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -298,11 +317,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB + 1, y = yB - 1; x < 8 && y >= 0; x++, y--)
 		{
-			if (this->_board[x][y]->getValue() == 'Q' || this->_board[x][y]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][y]->getValue() != '#' && !isFirstDiagonalInstance)
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
 			{
 				isFirstDiagonalInstance = true;
 			}
@@ -313,11 +332,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int y = yB - 1; y >= 0; y--)
 		{
-			if (this->_board[xW][y]->getValue() == 'Q' || this->_board[xW][y]->getValue() == 'B' && !isFirstLineInstance)
+			if (this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'B' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[xW][y]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[y][xB]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
@@ -326,11 +345,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int y = yB + 1; y < 8; y++)
 		{
-			if (this->_board[xW][y]->getValue() == 'Q' || this->_board[xW][y]->getValue() == 'B' && !isFirstLineInstance)
+			if (this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'B' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[xW][y]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[y][xB]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
@@ -338,31 +357,32 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 
 		//vertical
 		isFirstLineInstance = false;
-		for (int x = xW - 1; x >= 0; x--)
+		for (int x = xB - 1; x >= 0; x--)
 		{
-			if (this->_board[x][yB]->getValue() == 'Q' || this->_board[x][yB]->getValue() == 'B' && !isFirstLineInstance)
+			if (this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'B' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][yB]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[yB][x]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
 		}
 
 		isFirstLineInstance = false;
-		for (int x = xW + 1; x < 8; x++)
+		for (int x = xB + 1; x < 8; x++)
 		{
-			if (this->_board[x][yB]->getValue() == 'Q' || this->_board[x][yB]->getValue() == 'B' && !isFirstLineInstance)
+			if (this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'B' && !isFirstLineInstance)
 			{
 				return true;
 			}
-			else if (this->_board[x][yB]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[yB][x]->getValue() != '#' && !isFirstLineInstance)
 			{
 				isFirstLineInstance = true;
 			}
 		}
 
+		//checking pawn black
 		if ((yB-1 > 0 && xB +1 < 8) && _board[yB - 1][xB + 1]->getValue() == 'P' )
 		{
 			return true;
@@ -371,7 +391,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		{
 			return true;
 		}
-		//checking knight
+		//checking knight black
 		if ((yB + 2 < 8 && xB + 2 < 8) && _board[yB + 2][xB + 1]->getValue() == 'N')
 		{
 			return true;
@@ -403,11 +423,9 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		else if ((yB-1> 0 && xB + 2 < 8) && _board[yB - 1][xB + 2]->getValue() == 'N')
 		{
 			return true;
-		}
-
-			
+		}	
 	}
-		
+	return false;
 }
 
 void GameBoard::initBoard()
@@ -451,7 +469,7 @@ void GameBoard::initBoard()
 
 bool GameBoard::checkForEat(Piece* src, Piece* dst)
 {
-	if ((src->isPieceWhite() != dst->isPieceWhite()) && (src->getValue() != '#' || dst->getValue() != '#'))
+	if ((src->isPieceWhite() != dst->isPieceWhite()) && (dst->getValue() != '#'))
 	{
 		return true;
 	}
