@@ -29,13 +29,20 @@ int GameBoard::move(std::string& move)
 	Piece* srcPlayer = placeToPiece(playerStr);
 	Piece* dstPlayer = placeToPiece(dst);
 	Piece* nullPlayer = nullptr;
-	opCode = srcPlayer->isLegal(this->_board, dst);
 	
 	if (srcPlayer->isPieceWhite() == this->_isWhiteTurn)
 	{
-		if (opCode == 0 || opCode == 1 || opCode == 8)
+		opCode = srcPlayer->isLegal(this->_board, dst);
+		if (opCode == 0)
 		{
-			if (checkForEat(srcPlayer, dstPlayer))
+
+			if (dstPlayer->getValue() == 'k')
+			{
+				opCode = 8;
+				return opCode;
+			}
+
+			else if (checkForEat(srcPlayer, dstPlayer))
 			{
 				nullPlayer = new NullPiece(*dstPlayer);
 				this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = nullPlayer;
