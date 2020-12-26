@@ -82,22 +82,41 @@ int Pawn::isLegal(Piece* board[8][8], std::string& dst)
 				{
 					if (this->_position[1] == otherX && this->_position[0] + 2 == otherY)
 					{
-						opCode = 0;
-						this->_isFirstMove = false;
-						return opCode;
+							if (board[otherY - 1][otherX]->getValue() == '#')
+							{
+								opCode = 0;
+								this->_isFirstMove = false;
+								return opCode;
+							}
+							else
+							{
+								opCode = 6;
+								this->_isFirstMove = false;
+								return opCode;
+							}
 					}
 					else
 					{
 						this->_isFirstMove = false;
 					}
+
 				}
 				else
 				{
 					if (this->_position[1] == otherX && this->_position[0] - 2 == otherY)
 					{
-						opCode = 0;
-						this->_isFirstMove = false;
-						return opCode;
+						if (board[otherY + 1][otherX]->getValue() == '#')
+						{
+							opCode = 0;
+							this->_isFirstMove = false;
+							return opCode;
+						}
+						else
+						{
+							opCode = 6;
+							this->_isFirstMove = false;
+							return opCode;
+						}
 					}
 					else
 					{
