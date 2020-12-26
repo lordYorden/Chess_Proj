@@ -5,6 +5,8 @@ class GameBoard
 private:
 	Piece* _board[8][8];
 	bool _isWhiteTurn;
+	std::string _whiteKingPlace;
+	std::string _blackKingPlace;
 
 	void initBoard();
 	bool checkForEat(Piece* src, Piece* dst);

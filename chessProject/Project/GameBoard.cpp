@@ -13,6 +13,9 @@ GameBoard::GameBoard():
 	_isWhiteTurn(true)
 {
 	initBoard();
+	//king black and king white default values
+	this->_blackKingPlace = "d8";
+	this->_whiteKingPlace = "d1";
 }
 
 GameBoard::~GameBoard()
@@ -35,6 +38,17 @@ int GameBoard::move(std::string& move)
 		opCode = srcPlayer->isLegal(this->_board, dst);
 		if (opCode == 0)
 		{
+			if (srcPlayer->getValue() == 'k')
+			{
+				if (srcPlayer->isPieceWhite())
+				{
+					this->_whiteKingPlace = dst;
+				}
+				else
+				{
+					this->_blackKingPlace = dst;
+				}
+			}
 
 			if (dstPlayer->getValue() == 'k')
 			{
