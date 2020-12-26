@@ -46,8 +46,8 @@ int GameBoard::move(std::string& move)
 			{
 				swap(srcPlayer, dstPlayer);
 			}
+			flipTurn();
 		}
-		flipTurn();
 	}
 	else
 	{
