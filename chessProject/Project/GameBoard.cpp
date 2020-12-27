@@ -25,23 +25,23 @@ GameBoard::~GameBoard()
 
 int GameBoard::move(std::string& move)
 {
-	std::string playerStr = move.substr(0, 2);
-	std::string dst = move.substr(2, 2);
+	std::string playerStr = move.substr(0, 2); //src player place
+	std::string dst = move.substr(2, 2); //dst player place
 	bool isEat = false;
 	int opCode = 0;
 	std::cout << "sep: " << playerStr << ", " << dst << std::endl;
-	Piece* srcPlayer = placeToPiece(playerStr);
-	Piece* dstPlayer = placeToPiece(dst);
-	Piece* nullPlayer = nullptr;
-	std::string oldWhiteKingPlace = this->_whiteKingPlace;
+	Piece* srcPlayer = placeToPiece(playerStr); //getting the piece in the src place
+	Piece* dstPlayer = placeToPiece(dst); //getting the piece value in the dst place
+	Piece* nullPlayer = nullptr; //for eating later
+	std::string oldWhiteKingPlace = this->_whiteKingPlace; //saving original hwite king values
 	std::string oldBlackKingPlace = this->_blackKingPlace;
 	
-	if (srcPlayer->isPieceWhite() == this->_isWhiteTurn)
+	if (srcPlayer->isPieceWhite() == this->_isWhiteTurn) //if the src piece is matching the current turn
 	{
-		opCode = srcPlayer->isLegal(this->_board, dst);
-		if (opCode == 0)
+		opCode = srcPlayer->isLegal(this->_board, dst); //getting opcode from islegal
+		if (opCode == 0) //if its a valid move
 		{
-			if (srcPlayer->getValue() == 'k' || srcPlayer->getValue() == 'K')
+			if (srcPlayer->getValue() == 'k' || srcPlayer->getValue() == 'K') //if its the king, we update the class fields
 			{
 				if (srcPlayer->isPieceWhite())
 				{
@@ -53,46 +53,52 @@ int GameBoard::move(std::string& move)
 				}
 			}
 
-			if (dstPlayer->getValue() == 'k' || dstPlayer->getValue() == 'K')
+			if (dstPlayer->getValue() == 'k' || dstPlayer->getValue() == 'K') //if we managed to eat the king the game will ned
+				/*
+				* 
+				* NOTE: sometime the player is in mate, and he cannot escape it or avoid it, so the
+				game would be stuck on player's turn and the player should stop playing by himself
+				because we didn't check checkmate
+				*/
 			{
 				opCode = 8;
 				return opCode;
 			}
-			isEat = checkForEat(srcPlayer, dstPlayer);
+			isEat = checkForEat(srcPlayer, dstPlayer); //we're checking if an eat occurs
 			if (isEat)
 			{
-				nullPlayer = new NullPiece(*dstPlayer);
-				this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = nullPlayer;
-				swap(srcPlayer, nullPlayer);
+				nullPlayer = new NullPiece(*dstPlayer); //making a null piece with dstPlayers fields
+				this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = nullPlayer; //setting the dstPlayers position to the nullPiece on the board
+				swap(srcPlayer, nullPlayer);//swapping between src and null
 			}
 			else
 			{
-				swap(srcPlayer, dstPlayer);
+				swap(srcPlayer, dstPlayer); //if there wasn't an eating operation,switch between src and dst
 			}
 			std::cout << this->toStringBoard() << std::endl;
 
-			if (isThreatened(!this->_isWhiteTurn) && !isThreatened(this->_isWhiteTurn))
+			if (isThreatened(!this->_isWhiteTurn) && !isThreatened(this->_isWhiteTurn)) //if we made check but didn't get ourselves into check
 			{
 				opCode = 1;
 			}
-			else if (isThreatened(this->_isWhiteTurn))
+			else if (isThreatened(this->_isWhiteTurn)) //if we are threatened by a certain move
 			{
 				opCode = 4;
-				
-				if (isEat)
+				//if we were threatened we need to revert the move we already did before
+				if (isEat) //if we chose to eat before
 				{
-					swap(srcPlayer, nullPlayer);
-					this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = dstPlayer;
+					swap(srcPlayer, nullPlayer); //restoring src player to his original position
+					this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = dstPlayer; //restoring eaten  player
 					//delete nullPlayer;
 				}
 				else
 				{
-					swap(dstPlayer, srcPlayer);
+					swap(dstPlayer, srcPlayer); //just swapping places
 				}
 
-				if (srcPlayer->getValue() == 'k' || srcPlayer->getValue() == 'K')
+				if (srcPlayer->getValue() == 'k' || srcPlayer->getValue() == 'K') //if we reverted a king moevement
 				{
-					if (srcPlayer->isPieceWhite())
+					if (srcPlayer->isPieceWhite()) //we update its place in the class field
 					{
 						this->_whiteKingPlace = oldWhiteKingPlace;
 					}
@@ -102,7 +108,7 @@ int GameBoard::move(std::string& move)
 					}
 				}
 			}
-			if (opCode == 0 || opCode == 1 || opCode == 8)
+			if (opCode == 0 || opCode == 1 || opCode == 8) //if there was a valid operation, we flip the turn
 			{
 				flipTurn();
 			}
@@ -114,6 +120,10 @@ int GameBoard::move(std::string& move)
 	}
 	return opCode;
 }
+/*
+* prints the board
+* (upside down, easy for debugging)
+*/
 
 std::string GameBoard::toStringBoard()
 {
@@ -128,7 +138,9 @@ std::string GameBoard::toStringBoard()
 	}
 	return boardStr;
 }
-
+/*
+* A function that checks if a black/white king is threatened, by checking for a threat in his diagonals,lines, and frame
+*/
 bool GameBoard::isThreatened(bool isCheckingWhite)
 {
 	int xB = _blackKingPlace[0] - 'a';
@@ -139,10 +151,23 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 
 	bool isFirstDiagonalInstance = false;
 	bool isFirstLineInstance = false;
-	if (isCheckingWhite)
+	if (isCheckingWhite) //if we want to check the white king
 	{
 		//checking white diagonals
-		for (int x = xW + 1, y = yW + 1; x < 8 && y < 8; x++, y++)
+		for (int x = xW + 1, y = yW + 1; x < 8 && y < 8; x++, y++) //checking white upper right diagonal
+		{
+			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance) //checking if our first instance is either a queen or a bishop,if so the king is threatened
+			{
+				return true;
+			}
+			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance) //turning on our first instance flag if its not a queen or bishop
+			{
+				isFirstDiagonalInstance = true;
+			}
+		}
+
+		isFirstDiagonalInstance = false; //resetting this var
+		for (int x = xW - 1, y = yW - 1; x >= 0 && y >= 0; x--, y--) //checking hwite king lower left diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
@@ -155,20 +180,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstDiagonalInstance = false;
-		for (int x = xW - 1, y = yW - 1; x >= 0 && y >= 0; x--, y--)
-		{
-			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
-			{
-				return true;
-			}
-			else if (this->_board[y][x]->getValue() != '#' && !isFirstDiagonalInstance)
-			{
-				isFirstDiagonalInstance = true;
-			}
-		}
-
-		isFirstDiagonalInstance = false;
-		for (int x = xW - 1, y = yW + 1; x >= 0 && y < 8; x--, y++)
+		for (int x = xW - 1, y = yW + 1; x >= 0 && y < 8; x--, y++) //checking upper left diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
@@ -181,7 +193,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 			
 		isFirstDiagonalInstance = false;
-		for (int x = xW + 1, y = yW - 1; x < 8 && y >= 0; x++, y--)
+		for (int x = xW + 1, y = yW - 1; x < 8 && y >= 0; x++, y--) //checking lower right diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
@@ -196,20 +208,20 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		//checking lines white
 		//vertical
 		isFirstLineInstance = false;
-		for (int y = yW - 1; y >= 0; y--)
+		for (int y = yW - 1; y >= 0; y--) //checking vertical lines down
 		{
-			if ((this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r') && !isFirstLineInstance)
+			if ((this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r') && !isFirstLineInstance)//if our frst instance is a rook or queen he is thereatened
 			{
 				return true;
 			}
-			else if (this->_board[y][xW]->getValue() != '#' && !isFirstLineInstance)
+			else if (this->_board[y][xW]->getValue() != '#' && !isFirstLineInstance) //turning on our first instance flag
 			{
 				isFirstLineInstance = true;
 			}
 		}
 
 		isFirstLineInstance = false;
-		for (int y = yW + 1; y < 8; y++)
+		for (int y = yW + 1; y < 8; y++) //checking vertical up
 		{
 			if ((this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r') && !isFirstLineInstance)
 			{
@@ -223,7 +235,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 
 		//horizontal
 		isFirstLineInstance = false;
-		for (int x = xW - 1; x >= 0; x--)
+		for (int x = xW - 1; x >= 0; x--) //cehcking horizontal left
 		{
 			if ((this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'r') && !isFirstLineInstance)
 			{
@@ -236,7 +248,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstLineInstance = false;
-		for (int x = xW + 1; x < 8; x++)
+		for (int x = xW + 1; x < 8; x++) //checking horizontal right
 		{
 			if ((this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'r') && !isFirstLineInstance)
 			{
@@ -249,7 +261,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 		std::cout << "Pawn Debugging: " << _board[yW + 1][xW + 1]->getValue() << _board[yW + 1][xW - 1]->getValue() << std::endl;
 		//checking pawn white
-		if ((yW +1  < 8 && xW + 1 < 8) && _board[yW + 1][xW + 1]->getValue() == 'p')
+		if ((yW +1  < 8 && xW + 1 < 8) && _board[yW + 1][xW + 1]->getValue() == 'p') //checking for pawn values
 		{
 			return true;
 		}
@@ -257,7 +269,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		{
 			return true;
 		}
-		//checking knights black
+		//checking knights optional position to threat the king
 		if ((yW + 2 < 8 && xW + 2 < 8) && _board[yW + 2][xW + 1]->getValue() == 'n')
 		{
 			return true;
@@ -293,11 +305,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 
 		
 	}
-	else
+	else //checking the balck king
 	{
 		//checking Black diagonals
 		isFirstDiagonalInstance = false;
-		for (int x = xB + 1, y = yB + 1; x < 8 && y < 8; x++, y++)
+		for (int x = xB + 1, y = yB + 1; x < 8 && y < 8; x++, y++) //checking upper right diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
@@ -310,7 +322,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstDiagonalInstance = false;
-		for (int x = xB - 1, y = yB - 1; x >= 0 && y >= 0; x--, y--)
+		for (int x = xB - 1, y = yB - 1; x >= 0 && y >= 0; x--, y--) //checking lower left diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
@@ -323,7 +335,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstDiagonalInstance = false;
-		for (int x = xB - 1, y = yB + 1; x >= 0 && y < 8; x--, y++)
+		for (int x = xB - 1, y = yB + 1; x >= 0 && y < 8; x--, y++) //checking upper left diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
@@ -336,7 +348,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstDiagonalInstance = false;
-		for (int x = xB + 1, y = yB - 1; x < 8 && y >= 0; x++, y--)
+		for (int x = xB + 1, y = yB - 1; x < 8 && y >= 0; x++, y--) //checking lower right diagonal
 		{
 			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
@@ -351,7 +363,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		//checking lines black
 		//vertical
 		isFirstLineInstance = false;
-		for (int y = yB - 1; y >= 0; y--)
+		for (int y = yB - 1; y >= 0; y--) //checking vertcial down
 		{
 			if ((this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'R') && !isFirstLineInstance)
 			{
@@ -364,7 +376,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstLineInstance = false;
-		for (int y = yB + 1; y < 8; y++)
+		for (int y = yB + 1; y < 8; y++) //checking vertical up
 		{
 			if ((this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'R') && !isFirstLineInstance)
 			{
@@ -378,7 +390,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 
 		//horizontal
 		isFirstLineInstance = false;
-		for (int x = xB - 1; x >= 0; x--)
+		for (int x = xB - 1; x >= 0; x--) //checking horizontal right
 		{
 			if ((this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'R') && !isFirstLineInstance)
 			{
@@ -391,7 +403,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		isFirstLineInstance = false;
-		for (int x = xB + 1; x < 8; x++)
+		for (int x = xB + 1; x < 8; x++) //checking horizontal left
 		{
 			if ((this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'R') && !isFirstLineInstance)
 			{
@@ -403,7 +415,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 			}
 		}
 
-		//checking pawn black
+		//checking pawn values that threat the king
 		std::cout << "Pawn Debugging: " << _board[yB - 1][xB + 1]->getValue() << _board[yB -1 ][xB - 1]->getValue() << std::endl;
 		if ((yB-1 > 0 && xB +1 < 8) && _board[yB - 1][xB + 1]->getValue() == 'P' )
 		{
@@ -413,7 +425,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		{
 			return true;
 		}
-		//checking knight black
+		//checking knight values the might oppose a threat to the black KING
 		if ((yB + 2 < 8 && xB + 2 < 8) && _board[yB + 2][xB + 1]->getValue() == 'N')
 		{
 			return true;
@@ -449,7 +461,9 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 	}
 	return false;
 }
-
+/*
+* this function inits the board with the pieces at the right place according to the gui
+*/
 void GameBoard::initBoard()
 {
 	this->_board[0][0] = new Rook(0, 0, true);
@@ -473,13 +487,13 @@ void GameBoard::initBoard()
 	this->_board[0][4] = new Queen(4, 0, true);
 	this->_board[7][4] = new Queen(4, 7, false);
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++) //initing pawns
 	{
 		this->_board[6][i] = new Pawn(i, 6, false);
 		this->_board[1][i] = new Pawn(i, 1, true);
 	}
 
-	for (int i = 2; i < 6; i++)
+	for (int i = 2; i < 6; i++) //initing nullpieces
 	{
 		for (int j = 0; j < 8; j++)
 		{
@@ -489,7 +503,7 @@ void GameBoard::initBoard()
 
 }
 
-bool GameBoard::checkForEat(Piece* src, Piece* dst)
+bool GameBoard::checkForEat(Piece* src, Piece* dst) //if an eat occurs return true, else false
 {
 	if ((src->isPieceWhite() != dst->isPieceWhite()) && (dst->getValue() != '#'))
 	{
@@ -498,7 +512,7 @@ bool GameBoard::checkForEat(Piece* src, Piece* dst)
 	return false;
 }
 
-void GameBoard::swap(Piece* src, Piece* dst)
+void GameBoard::swap(Piece* src, Piece* dst) //swaps board location between two pieces and the object data itself
 {
 	int tempX = dst->getPositionX();
 	int tempY = dst->getPositionY();
@@ -511,7 +525,7 @@ void GameBoard::swap(Piece* src, Piece* dst)
 	src->setPositionY(tempY);
 }
 
-Piece*& GameBoard::placeToPiece(std::string& place)
+Piece*& GameBoard::placeToPiece(std::string& place) //returns the piece in place "place"
 {
 	int opCode = 6;
 	int otherX = 0;
@@ -534,7 +548,7 @@ Piece*& GameBoard::placeToPiece(std::string& place)
 	return piece;
 }
 
-void GameBoard::flipTurn()
+void GameBoard::flipTurn() //turn management system. fli[s turn to matching one
 {
 	if (this->_isWhiteTurn)
 	{
