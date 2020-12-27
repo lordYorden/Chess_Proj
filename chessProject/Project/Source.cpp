@@ -1,7 +1,5 @@
 /*
-This file servers as an example of how to use Pipe.h file.
-It is recommended to use the following code in your project, 
-in order to read and write information from and to the Backend
+* used thair exemple for gui integration
 */
 
 #include "Pipe.h"
@@ -70,10 +68,13 @@ void main()
 		//msgToGraphics[1] = 0;
 		///******* JUST FOR EREZ DEBUGGING ******/
 
+		//integration itself
 		std::cout << g.toStringBoard() << std::endl;
 		opCode = g.move(msgFromGraphics);
+		//make the opCode message graphics
 		msgToGraphics[0] = opCode + '0';
 		msgToGraphics[1] = 0;
+		//print board info
 		std::cout << opCode << std::endl;
 		std::cout << g.toStringBoard() << std::endl;
 

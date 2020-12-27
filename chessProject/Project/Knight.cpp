@@ -2,8 +2,31 @@
 #include "Knight.h"
 #define BLACK 'n'
 #define WHITE 'N'
-#include <typeinfo>
+#define LESS_THEN_PLACE 2
+#define X_MAX_RANGE 'h'
+#define X_MIN_RANGE 'a'
+#define Y_MIN_RANGE '1'
+#define Y_MAX_RANGE '8'
+#define Y_POSITION 0
+#define X_POSITION 1
+#define NULL_PIECE '#'
+#define X_PLACE 0
+#define Y_PLACE 1
+#define BOARD_SIZE 8
+#define MOVE_ONE_IN_AXIS 1
+#define MOVE_TWO_IN_AXIS 2
+//opCode
+#define OUT_OF_RANGE 5
+#define SAME_COLOR 3
+#define SAME_SQUARE 7
+#define ILIGAL_MOVE 6
+#define LIGAL_MOVE 0
 
+/*
+* the constructor of class kinght
+* input: the place in the board (x,y), is the piece white
+* output: none
+*/
 Knight::Knight(int x,int y, bool isWhite):
 	Piece(x,y, isWhite)
 {
@@ -21,76 +44,83 @@ Knight::~Knight()
 {
 }
 
-int Knight::isLegal(Piece* board[8][8], std::string& dst)
+/*
+* the is legal function checks every single valid move for a piece and checks if the
+* curr move with knight fits one of the posible moves also checks for end result such as
+* same place or same color
+* input: the board, the place in the board to move the knight to
+* output: opCode - the protocol code that fits the move
+*/
+int Knight::isLegal(Piece* board[BOARD_SIZE][BOARD_SIZE], std::string& dst)
 {
 	int opCode = 0;
 	int otherX = 0;
 	int otherY = 0;
 
-	if (dst.length() > 2)
+	if (dst.length() > LESS_THEN_PLACE)
 	{
 		//throw inputExption *why and how*
 	}
-	else if ((dst[0] > 'h' || dst[0] < 'a') || (dst[1] > '8' || dst[1] < '1'))
+	else if ((dst[X_PLACE] > X_MAX_RANGE || dst[X_PLACE] < X_MIN_RANGE) || (dst[Y_PLACE] > Y_MAX_RANGE || dst[Y_PLACE] < Y_MIN_RANGE))
 	{
-		opCode = 5;
+		opCode = OUT_OF_RANGE;
 	}
 	else
 	{
-		otherX = dst[0] - 'a';
-		otherY = dst[1] - '1';
+		otherX = dst[X_PLACE] - X_MIN_RANGE;
+		otherY = dst[Y_PLACE] - Y_MIN_RANGE;
 	}
 
-	if (board[otherY][otherX]->getValue() != '#')
+	if (board[otherY][otherX]->getValue() != NULL_PIECE)
 	{
 
-		if ((otherX == this->_position[1]) && (otherY == this->_position[0]))
+		if ((otherX == this->_position[X_POSITION]) && (otherY == this->_position[Y_POSITION]))
 		{
-			opCode = 7;
+			opCode = SAME_SQUARE;
 		}
 		else if (this->_isWhite == board[otherY][otherX]->isPieceWhite())
 		{
-			opCode = 3;
+			opCode = SAME_COLOR;
 		}
 	}
 
 	if (!opCode)
 	{
-		if ((otherX == this->_position[1] + 1) && (otherY == this->_position[0] + 2))
+		if ((otherX == this->_position[X_POSITION] + MOVE_ONE_IN_AXIS) && (otherY == this->_position[Y_POSITION] + MOVE_TWO_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] + 2) && (otherY == this->_position[0] + 1))
+		else if ((otherX == this->_position[X_POSITION] + MOVE_TWO_IN_AXIS) && (otherY == this->_position[Y_POSITION] + MOVE_ONE_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] - 1) && (otherY == this->_position[0] + 2))
+		else if ((otherX == this->_position[X_POSITION] - MOVE_ONE_IN_AXIS) && (otherY == this->_position[Y_POSITION] + MOVE_TWO_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] - 2) && (otherY == this->_position[0] + 1))
+		else if ((otherX == this->_position[X_POSITION] - MOVE_TWO_IN_AXIS) && (otherY == this->_position[Y_POSITION] + MOVE_ONE_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] + 1) && (otherY == this->_position[0] - 2))
+		else if ((otherX == this->_position[X_POSITION] + MOVE_ONE_IN_AXIS) && (otherY == this->_position[Y_POSITION] - MOVE_TWO_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] + 2) && (otherY == this->_position[0] - 1))
+		else if ((otherX == this->_position[X_POSITION] + MOVE_TWO_IN_AXIS) && (otherY == this->_position[Y_POSITION] - MOVE_ONE_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] - 1) && (otherY == this->_position[0] - 2))
+		else if ((otherX == this->_position[X_POSITION] - MOVE_ONE_IN_AXIS) && (otherY == this->_position[Y_POSITION] - MOVE_TWO_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
-		else if ((otherX == this->_position[1] - 2) && (otherY == this->_position[0] - 1))
+		else if ((otherX == this->_position[X_POSITION] - MOVE_TWO_IN_AXIS) && (otherY == this->_position[Y_POSITION] - MOVE_ONE_IN_AXIS))
 		{
-			opCode = 0;
+			opCode = LIGAL_MOVE;
 		}
 		else
 		{
-			opCode = 6;
+			opCode = ILIGAL_MOVE;
 		}
 	}
 

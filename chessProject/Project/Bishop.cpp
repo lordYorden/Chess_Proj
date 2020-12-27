@@ -1,5 +1,32 @@
 #include "Bishop.h"
+#include "Queen.h"
+#define BLACK 'q'
+#define WHITE 'Q'
+#define LESS_THEN_PLACE 2
+#define X_MAX_RANGE 'h'
+#define X_MIN_RANGE 'a'
+#define Y_MIN_RANGE '1'
+#define Y_MAX_RANGE '8'
+#define Y_POSITION 0
+#define X_POSITION 1
+#define NULL_PIECE '#'
+#define X_PLACE 0
+#define Y_PLACE 1
+#define BOARD_SIZE 8
+#define MIN_X 0
+#define NOT_THE_CURR_PIECE 1
+//opCode
+#define OUT_OF_RANGE 5
+#define SAME_COLOR 3
+#define SAME_SQUARE 7
+#define ILIGAL_MOVE 6
+#define LIGAL_MOVE 0
 
+/*
+* the constructor of class bishop
+* input: the place in the board (x,y), is the piece white
+* output: none
+*/
 Bishop::Bishop(int x,int y, bool isWhite) :
 	Piece(x,y,isWhite)
 {
@@ -12,103 +39,110 @@ Bishop::Bishop(int x,int y, bool isWhite) :
 		setValue(BLACK);
 	}
 }
-int Bishop::isLegal(Piece* board[8][8], std::string& dst)
+
+/*
+* the is legal function checks every single valid move for a piece and checks if the
+* curr move with bishop fits one of the posible moves also checks for end result such as
+* same place or same color
+* input: the board, the place in the board to move the bishop to
+* output: opCode - the protocol code that fits the move
+*/
+int Bishop::isLegal(Piece* board[BOARD_SIZE][BOARD_SIZE], std::string& dst)
 {
 	int opCode = 0;
 	int otherX = 0;
 	int otherY = 0;
 
-	if (dst.length() > 2)
+	if (dst.length() > LESS_THEN_PLACE)
 	{
 		//throw inputExption *why and how*
 	}
-	else if ((dst[0] > 'h' || dst[0] < 'a') || (dst[1] > '8' || dst[1] < '1'))
+	else if ((dst[X_PLACE] > X_MAX_RANGE || dst[X_PLACE] < X_MIN_RANGE) || (dst[Y_PLACE] > Y_MAX_RANGE || dst[Y_PLACE] < Y_MIN_RANGE))
 	{
-		opCode = 5;
+		opCode = OUT_OF_RANGE;
 	}
 	else
 	{
-		otherX = dst[0] - 'a';
-		otherY = dst[1] - '1';
+		otherX = dst[X_PLACE] - X_MIN_RANGE;
+		otherY = dst[Y_PLACE] - Y_MIN_RANGE;
 	}
 
-
-	if (board[otherY][otherX]->getValue() != '#')
+	if (board[otherY][otherX]->getValue() != NULL_PIECE)
 	{
 
-		if ((otherX == this->_position[1]) && (otherY == this->_position[0]))
+		if ((otherX == this->_position[X_POSITION]) && (otherY == this->_position[Y_POSITION]))
 		{
-			opCode = 7;
+			opCode = SAME_SQUARE;
 		}
 		else if (this->_isWhite == board[otherY][otherX]->isPieceWhite())
 		{
-			opCode = 3;
+			opCode = SAME_COLOR;
 		}
 	}
 
 	if (!opCode)
 	{
-		opCode = 6;
-		if (this->_position[1] < otherX && this->_position[0] < otherY)
+		opCode = ILIGAL_MOVE;
+		if (this->_position[X_POSITION] < otherX && this->_position[Y_POSITION] < otherY)
 		{
-			for (int x = this->_position[1] + 1, y = this->_position[0] + 1; x < 8 && y < 8; x++, y++)
+			for (int x = this->_position[X_POSITION] + NOT_THE_CURR_PIECE, y = this->_position[Y_POSITION] + NOT_THE_CURR_PIECE; x < BOARD_SIZE && y < BOARD_SIZE; x++, y++)
 			{
 				if (x == otherX && y == otherY)
 				{
-					opCode = 0;
+					opCode = LIGAL_MOVE;
 					return opCode;
 				}
-				else if (board[y][x]->getValue() != '#')
+				else if (board[y][x]->getValue() != NULL_PIECE)
 				{
-					opCode = 6;
+					opCode = ILIGAL_MOVE;
 					return opCode;
 				}
 			}
 		}
-		else if (this->_position[1] > otherX && this->_position[0] > otherY)
+		else if (this->_position[X_POSITION] > otherX && this->_position[Y_POSITION] > otherY)
 		{
-			for (int x = this->_position[1] - 1, y = this->_position[0] - 1; x >= 0 && y >= 0; x--, y--)
+			for (int x = this->_position[X_POSITION] - NOT_THE_CURR_PIECE, y = this->_position[Y_POSITION] - NOT_THE_CURR_PIECE; x >= MIN_X && y >= MIN_X; x--, y--)
 			{
 				if (x == otherX && y == otherY)
 				{
-					opCode = 0;
+					opCode = LIGAL_MOVE;
 					return opCode;
 				}
-				else if (board[y][x]->getValue() != '#')
+				else if (board[y][x]->getValue() != NULL_PIECE)
 				{
-					opCode = 6;
+					opCode = ILIGAL_MOVE;
 					return opCode;
 				}
 			}
 		}
-		else if (this->_position[1] > otherX && this->_position[0] < otherY)
+		else if (this->_position[X_POSITION] > otherX && this->_position[Y_POSITION] < otherY)
 		{
-			for (int x = this->_position[1] - 1, y = this->_position[0] + 1; x >= 0 && y < 8; x--, y++)
+			for (int x = this->_position[X_POSITION] - NOT_THE_CURR_PIECE, y = this->_position[Y_POSITION] + NOT_THE_CURR_PIECE; x >= MIN_X && y < BOARD_SIZE; x--, y++)
 			{
 				if (x == otherX && y == otherY)
 				{
-					opCode = 0;
+					opCode = LIGAL_MOVE;
 					return opCode;
 				}
-				else if (board[y][x]->getValue() != '#')
+				else if (board[y][x]->getValue() != NULL_PIECE)
 				{
-					opCode = 6;
+					opCode = ILIGAL_MOVE;
 					return opCode;
 				}
 			}
 		}
-		else if (this->_position[1] < otherX && this->_position[0] > otherY)
+		else if (this->_position[X_POSITION] < otherX && this->_position[Y_POSITION] > otherY)
 		{
-			for (int x = this->_position[1] + 1, y = this->_position[0] - 1; x < 8 && y >= 0; x++, y--)
+			for (int x = this->_position[X_POSITION] + NOT_THE_CURR_PIECE, y = this->_position[Y_POSITION] - NOT_THE_CURR_PIECE; x < BOARD_SIZE && y >= MIN_X; x++, y--)
 			{
 				if (x == otherX && y == otherY)
 				{
-					opCode = 0;
+					opCode = LIGAL_MOVE;
 					return opCode;
 				}
-				else if (board[y][x]->getValue() != '#')
+				else if (board[y][x]->getValue() != NULL_PIECE)
 				{
-					opCode = 6;
+					opCode = ILIGAL_MOVE;
 					return opCode;
 				}
 			}
