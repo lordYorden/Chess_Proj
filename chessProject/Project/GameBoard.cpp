@@ -33,6 +33,8 @@ int GameBoard::move(std::string& move)
 	Piece* srcPlayer = placeToPiece(playerStr);
 	Piece* dstPlayer = placeToPiece(dst);
 	Piece* nullPlayer = nullptr;
+	std::string oldWhiteKingPlace = this->_whiteKingPlace;
+	std::string oldBlackKingPlace = this->_blackKingPlace;
 	
 	if (srcPlayer->isPieceWhite() == this->_isWhiteTurn)
 	{
@@ -86,6 +88,18 @@ int GameBoard::move(std::string& move)
 				else
 				{
 					swap(dstPlayer, srcPlayer);
+				}
+
+				if (srcPlayer->getValue() == 'k' || srcPlayer->getValue() == 'K')
+				{
+					if (srcPlayer->isPieceWhite())
+					{
+						this->_whiteKingPlace = oldWhiteKingPlace;
+					}
+					else
+					{
+						this->_blackKingPlace = oldBlackKingPlace;
+					}
 				}
 			}
 			if (opCode == 0 || opCode == 1 || opCode == 8)
