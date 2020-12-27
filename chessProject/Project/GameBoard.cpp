@@ -78,8 +78,7 @@ int GameBoard::move(std::string& move)
 				
 				if (isEat)
 				{
-					nullPlayer = new NullPiece(*dstPlayer);
-					swap(nullPlayer, dstPlayer);
+					swap(nullPlayer, srcPlayer);
 				}
 				swap(dstPlayer, srcPlayer);
 				if (isEat)
