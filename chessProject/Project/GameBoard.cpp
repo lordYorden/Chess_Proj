@@ -129,7 +129,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		//checking white diagonals
 		for (int x = xW + 1, y = yW + 1; x < 8 && y < 8; x++, y++)
 		{
-			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -142,7 +142,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xW - 1, y = yW - 1; x >= 0 && y >= 0; x--, y--)
 		{
-			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -155,7 +155,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xW - 1, y = yW + 1; x >= 0 && y < 8; x--, y++)
 		{
-			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -168,7 +168,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xW + 1, y = yW - 1; x < 8 && y >= 0; x++, y--)
 		{
-			if (this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'q' || this->_board[y][x]->getValue() == 'b') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -179,11 +179,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		//checking lines white
-		//horizotal
+		//vertical
 		isFirstLineInstance = false;
 		for (int y = yW - 1; y >= 0; y--)
 		{
-			if (this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r' && !isFirstLineInstance)
+			if ((this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -196,7 +196,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int y = yW + 1; y < 8; y++)
 		{
-			if (this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r' && !isFirstLineInstance)
+			if ((this->_board[y][xW]->getValue() == 'q' || this->_board[y][xW]->getValue() == 'r') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -206,11 +206,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 			}
 		}
 
-		//vertical
+		//horizontal
 		isFirstLineInstance = false;
 		for (int x = xW - 1; x >= 0; x--)
 		{
-			if (this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'r' && !isFirstLineInstance)
+			if ((this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'r') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -223,7 +223,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int x = xW + 1; x < 8; x++)
 		{
-			if (this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'r' && !isFirstLineInstance)
+			if ((this->_board[yW][x]->getValue() == 'q' || this->_board[yW][x]->getValue() == 'r') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -284,7 +284,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB + 1, y = yB + 1; x < 8 && y < 8; x++, y++)
 		{
-			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -297,7 +297,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB - 1, y = yB - 1; x >= 0 && y >= 0; x--, y--)
 		{
-			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -310,7 +310,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB - 1, y = yB + 1; x >= 0 && y < 8; x--, y++)
 		{
-			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -323,7 +323,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstDiagonalInstance = false;
 		for (int x = xB + 1, y = yB - 1; x < 8 && y >= 0; x++, y--)
 		{
-			if (this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B' && !isFirstDiagonalInstance)
+			if ((this->_board[y][x]->getValue() == 'Q' || this->_board[y][x]->getValue() == 'B') && !isFirstDiagonalInstance)
 			{
 				return true;
 			}
@@ -334,11 +334,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		//checking lines black
-		//horizotal
+		//vertical
 		isFirstLineInstance = false;
 		for (int y = yB - 1; y >= 0; y--)
 		{
-			if (this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'R' && !isFirstLineInstance)
+			if ((this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'R') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -351,7 +351,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int y = yB + 1; y < 8; y++)
 		{
-			if (this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'R' && !isFirstLineInstance)
+			if ((this->_board[y][xB]->getValue() == 'Q' || this->_board[y][xB]->getValue() == 'R') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -361,11 +361,11 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 			}
 		}
 
-		//vertical
+		//horizontal
 		isFirstLineInstance = false;
 		for (int x = xB - 1; x >= 0; x--)
 		{
-			if (this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'R' && !isFirstLineInstance)
+			if ((this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'R') && !isFirstLineInstance)
 			{
 				return true;
 			}
@@ -378,7 +378,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		isFirstLineInstance = false;
 		for (int x = xB + 1; x < 8; x++)
 		{
-			if (this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'R' && !isFirstLineInstance)
+			if ((this->_board[yB][x]->getValue() == 'Q' || this->_board[yB][x]->getValue() == 'R') && !isFirstLineInstance)
 			{
 				return true;
 			}
