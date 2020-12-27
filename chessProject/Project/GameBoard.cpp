@@ -78,14 +78,10 @@ int GameBoard::move(std::string& move)
 				
 				if (isEat)
 				{
-					swap(nullPlayer, srcPlayer);
-				}
-				swap(dstPlayer, nullPlayer);
-				if (isEat)
-				{
+					this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = dstPlayer;
 					delete nullPlayer;
 				}
-				
+				swap(dstPlayer, srcPlayer);
 			}
 			if (opCode == 0 || opCode == 1 || opCode == 8)
 			{
