@@ -67,6 +67,7 @@ int GameBoard::move(std::string& move)
 			{
 				swap(srcPlayer, dstPlayer);
 			}
+			std::cout << this->toStringBoard() << std::endl;
 
 			if (isThreatened(!this->_isWhiteTurn))
 			{
@@ -78,10 +79,14 @@ int GameBoard::move(std::string& move)
 				
 				if (isEat)
 				{
+					swap(srcPlayer, nullPlayer);
 					this->_board[dstPlayer->getPositionY()][dstPlayer->getPositionX()] = dstPlayer;
-					delete nullPlayer;
+					//delete nullPlayer;
 				}
-				swap(dstPlayer, srcPlayer);
+				else
+				{
+					swap(dstPlayer, srcPlayer);
+				}
 			}
 			if (opCode == 0 || opCode == 1 || opCode == 8)
 			{
