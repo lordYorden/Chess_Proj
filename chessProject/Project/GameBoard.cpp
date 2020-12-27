@@ -80,7 +80,7 @@ int GameBoard::move(std::string& move)
 				{
 					swap(nullPlayer, srcPlayer);
 				}
-				swap(dstPlayer, srcPlayer);
+				swap(dstPlayer, nullPlayer);
 				if (isEat)
 				{
 					delete nullPlayer;
