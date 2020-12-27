@@ -71,7 +71,7 @@ int GameBoard::move(std::string& move)
 			}
 			std::cout << this->toStringBoard() << std::endl;
 
-			if (isThreatened(!this->_isWhiteTurn))
+			if (isThreatened(!this->_isWhiteTurn) && !isThreatened(this->_isWhiteTurn))
 			{
 				opCode = 1;
 			}
@@ -135,6 +135,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 	int yB = _blackKingPlace[1] - '1';
 	int xW = _whiteKingPlace[0] - 'a';
 	int yW = _whiteKingPlace[1] - '1';
+	std::cout << _board[yB][xB]->getValue() << _board[yW][xW]->getValue() << std::endl;
 
 	bool isFirstDiagonalInstance = false;
 	bool isFirstLineInstance = false;
@@ -246,13 +247,13 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 				isFirstLineInstance = true;
 			}
 		}
-
+		std::cout << "Pawn Debugging: " << _board[yW + 1][xW + 1]->getValue() << _board[yW + 1][xW - 1]->getValue() << std::endl;
 		//checking pawn white
-		if ((yW - 1 > 0 && xW + 1 < 8) && _board[yW - 1][xW + 1]->getValue() == 'p')
+		if ((yW +1  < 8 && xW + 1 < 8) && _board[yW + 1][xW + 1]->getValue() == 'p')
 		{
 			return true;
 		}
-		else if ((yW - 1 > 0 && xW - 1 > 0) && _board[yW - 1][xW - 1]->getValue() == 'p')
+		else if ((yW + 1 < 8 && xW - 1 > 0) && _board[yW + 1][xW - 1]->getValue() == 'p')
 		{
 			return true;
 		}
@@ -403,6 +404,7 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 		}
 
 		//checking pawn black
+		std::cout << "Pawn Debugging: " << _board[yB - 1][xB + 1]->getValue() << _board[yB -1 ][xB - 1]->getValue() << std::endl;
 		if ((yB-1 > 0 && xB +1 < 8) && _board[yB - 1][xB + 1]->getValue() == 'P' )
 		{
 			return true;
