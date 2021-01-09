@@ -15,7 +15,7 @@ public:
 	virtual int isLegal(Piece* board[BOARD_SIZE][BOARD_SIZE], std::string& dst) = 0;
 	//geters and seters for piece properties
 	void setPosition(std::string& place);
-	void setPositionX(int x);
+	void setPositionX(int x); //review: ok, but why not cobine x,y together in one function?
 	void setPositionY(int y);
 	void setValue(char value);
 	char getValue() const;

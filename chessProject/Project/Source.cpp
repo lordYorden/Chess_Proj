@@ -19,7 +19,7 @@ void main()
 	
 	Pipe p;
 	int opCode = 0;
-	GameBoard g = GameBoard();
+	GameBoard g = GameBoard(); //review: meaningful names are preferable
 	bool isConnect = p.connect();
 	
 	string ans;

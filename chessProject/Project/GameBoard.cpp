@@ -22,11 +22,13 @@ GameBoard::GameBoard():
 	//king black and king white default values
 	this->_blackKingPlace = "d8";
 	this->_whiteKingPlace = "d1";
+	//review: you can deduct the default values from the string "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR0" or from init board.
 }
 
 GameBoard::~GameBoard()
 {
 	//delete[] &this->_board;
+	//review: here you need to delete all data from the board (not like this) 
 }
 /*
 * fucntion that makes a move operation, eat or every other operation you could imagine in chess
@@ -164,6 +166,10 @@ bool GameBoard::isThreatened(bool isCheckingWhite)
 	bool isFirstDiagonalInstance = false;
 	bool isFirstLineInstance = false;
 	if (isCheckingWhite) //if we want to check the white king
+	//review: you can use the code you already wrote of each piece, and test with it all the pieces on the board.
+	//as consequence, the code turn out to be complicated and hard to follow.
+	//forther more, if you writing in this manner, please pay attention that actions are very similar for balck and white, 
+	//so even here you can reuse code.
 	{
 		//checking white diagonals
 		for (int x = xW + 1, y = yW + 1; x < MAX && y < MAX; x++, y++) //checking white upper right diagonal
@@ -533,7 +539,7 @@ void GameBoard::initBoard()
 
 	for (int i = 2; i < 6; i++) //initing nullpieces
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 8; j++) //review: better to write '8' in a define - it is the size of the row/col in chess board
 		{
 			this->_board[i][j] = new NullPiece(j, i);
 		}
