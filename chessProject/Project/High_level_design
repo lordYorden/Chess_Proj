@@ -1,0 +1,4 @@
+High Level Design- Chess project
+the frontend will communicate with the backend through a pipe. the frontend will send a code containing the move details,
+dst coordinates and src coordinates. the frontend will check if the move is illegal, if there are any pieces in the way. if the move fits the rules of chess and so on...
+the code will be implemented in a way that it will contain a super class named piece, and all the pieces will inherit it's characteristics like current co-ordinates and color. there will be one more class named game, it will contain a board of pieces and will know the current state of the game. after a move is being validated a return code is being sent to the frontend. if the code is one of the valid codes, the move will occur in the frontend.
